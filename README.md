@@ -1,18 +1,18 @@
 # highchart-dropwizard-template
 
-A blank template using Dropwizard as a Java REST API backed by MYSQL.
-A simple Highchart linechart uses the REST API to populdate a line graph.
+A simple project which stores line-chart data in MySql and displays it using HighCharts and JQuery. It assumes you are running MySql locally and provides a script to populate the DB with dummy data. Db connection into is in the app.yml file. The backend is Dropwizard and serves json responses to the frontend via REST.
 
-how to start:
+build:<br />
+`mvn clean package`
 
->./scripts/create_db.sh
-
->./scripts/start.sh
-
-REST endpoint:
-<http://localhost:8080/graph/line-chart?name=test-chart-1&after=0&before5471581181000>
+start:<br/>
+`./scripts/start.sh`<br/>
+`./scripts/populateSeedData.sh`
 
 
-Simple Line chart:
-<http://localhost:8080/html/test.html>
+REST endpoint:<br/>
+<http://localhost:8080/graph/line-chart?name=test-chart-1&after=2016-08-01&before2016-08-31>
+
+Simple line chart:<br/>
+<http://localhost:8080/charts/line-chart.html>
 
