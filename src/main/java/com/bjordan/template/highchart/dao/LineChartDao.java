@@ -30,7 +30,7 @@ public class LineChartDao {
 
   public void insertLineGraphDataPoint(String graphName, long timestamp, double dataPoint) {
     try (Connection conn = connectionManager.getConnection();
-    PreparedStatement stmt = conn.prepareStatement(INSERT_LINE_GRAPH)) {
+         PreparedStatement stmt = conn.prepareStatement(INSERT_LINE_GRAPH)) {
       stmt.setString(1, graphName);
       stmt.setLong(2, timestamp);
       stmt.setDouble(3, dataPoint);
@@ -51,10 +51,7 @@ public class LineChartDao {
 
       try (ResultSet rs = stmt.executeQuery()) {
         while (rs.next()) {
-          dataBuilder.add(ChartData.newBuilder()
-              .withTimestamp(rs.getLong(1))
-              .withDataPoint(rs.getDouble(2))
-              .build());
+          dataBuilder.add(new ChartData(rs.getLong(1), rs.getDouble(2)));
         }
       }
     } catch (SQLException ex) {

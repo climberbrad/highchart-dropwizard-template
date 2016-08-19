@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.Period;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -38,19 +37,17 @@ public class AppResource {
       @QueryParam("name") String name,
       @QueryParam("after") String afterInclusive,
       @QueryParam("before") String beforeInclusive) {
-    long weekAgo = Instant.now().minus(Period.ofDays(45)).getEpochSecond();
-    long today = Instant.now().getEpochSecond();
 
+    ChartWrapper wrapper = lineChartDao.getGraphData(
+        name,
+        parseDate(afterInclusive).getEpochSecond(),
+        parseDate(beforeInclusive).getEpochSecond()
+    );
 
-
-    Instant after = getDate(afterInclusive);
-    Instant before = getDate(beforeInclusive);
-
-    ChartWrapper wrapper = lineChartDao.getGraphData(name, after.getEpochSecond(), before.getEpochSecond());
     return Response.ok().entity(wrapper).build();
   }
 
-  private Instant getDate(String date) {
+  private Instant parseDate(String date) {
     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     try {
       return format.parse(date).toInstant();
