@@ -1,6 +1,6 @@
 # highchart-dropwizard-template
 
-A simple project which stores line-chart data in MySql and displays it using HighCharts and JQuery. It assumes you are running MySql locally and provides a script to populate the DB with dummy data. Db connection into is in the app.yml file. The backend is Dropwizard and serves json responses to the frontend via REST.
+A simple project which stores line-chart data in MySql and displays it using HighCharts and JQuery. It assumes you are running MySql locally and provides a script to populate the DB with dummy data. Db connection info is in the app.yml file. The backend is Dropwizard and serves json responses to the frontend via REST.
 
 build:<br />
 `mvn clean package`
