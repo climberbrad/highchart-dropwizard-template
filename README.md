@@ -4,6 +4,7 @@ A blank template using Dropwizard as a Java REST API backed by MYSQL.
 A simple Highchart linechart uses the REST API to populdate a line graph.
 
 how to start:
+
 ./scripts/create_db.sh
 
 ./scripts/start.sh
