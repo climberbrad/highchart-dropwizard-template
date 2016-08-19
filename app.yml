@@ -1,0 +1,11 @@
+template: Hello, %s!
+defaultName: Stranger
+
+database:
+  driver: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+  hostname: localhost
+  port: 3306
+  dbName: app_graphs
+  user: root
+  connectionTimeout: 30000
+  connectionPoolSize: 20
