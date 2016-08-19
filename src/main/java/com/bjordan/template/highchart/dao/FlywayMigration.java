@@ -1,4 +1,4 @@
-package com.bjordan.template.highchart;
+package com.bjordan.template.highchart.dao;
 
 import com.bjordan.template.highchart.config.DbConfiguration;
 

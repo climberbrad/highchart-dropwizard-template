@@ -4,9 +4,11 @@ import com.bjordan.template.highchart.dao.LineChartDao;
 import com.bjordan.template.highchart.model.ChartWrapper;
 import com.yammer.metrics.annotation.Timed;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.Period;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,38 +17,46 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/graph")
+@Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class AppResource {
-  private final String template;
-  private final String defaultName;
-  private final AtomicLong counter;
   private final LineChartDao lineChartDao;
 
-  public AppResource(String template, String defaultName, LineChartDao lineChartDao) {
-    this.template = template;
-    this.defaultName = defaultName;
-    this.counter = new AtomicLong();
-
+  public AppResource(LineChartDao lineChartDao) {
     this.lineChartDao = lineChartDao;
   }
 
   @GET
   public Response hi() {
-    return Response.ok().entity("{\"timestamp\": 1471154400,\"dataPoint\": 185.9}").build();
+    return Response.ok().entity("hi").build();
   }
 
   @GET
-  @Path("/line-chart")
+  @Path("line-chart")
   @Timed
   public Response lineChartData(
       @QueryParam("name") String name,
-      @QueryParam("after") long afterInclusive,
-      @QueryParam("before") long beforeInclusive) {
+      @QueryParam("after") String afterInclusive,
+      @QueryParam("before") String beforeInclusive) {
     long weekAgo = Instant.now().minus(Period.ofDays(45)).getEpochSecond();
     long today = Instant.now().getEpochSecond();
 
-    ChartWrapper wrapper = lineChartDao.getGraphData(name, weekAgo, today);
+
+
+    Instant after = getDate(afterInclusive);
+    Instant before = getDate(beforeInclusive);
+
+    ChartWrapper wrapper = lineChartDao.getGraphData(name, after.getEpochSecond(), before.getEpochSecond());
     return Response.ok().entity(wrapper).build();
+  }
+
+  private Instant getDate(String date) {
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    try {
+      return format.parse(date).toInstant();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }
