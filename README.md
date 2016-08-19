@@ -13,6 +13,6 @@ start:<br/>
 REST endpoint:<br/>
 <http://localhost:8080/line-chart?name=line-chart-1&after=2016-08-01&before=2016-08-31>
 
-Charts:<br/>
+HighCharts:<br/>
 <http://localhost:8080/charts>
 
