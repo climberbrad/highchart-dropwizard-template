@@ -1,0 +1,124 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<style type="text/css">
+.form-style-4{
+    width: 450px;
+    font-size: 16px;
+    background: #495C70;
+    padding: 30px 30px 15px 30px;
+    border: 5px solid #53687E;
+}
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button],
+.form-style-4 input[type=text],
+.form-style-4 input[type=email],
+.form-style-4 textarea,
+.form-style-4 label
+{
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 16px;
+    color: #fff;
+
+}
+.form-style-4 label {
+    display:block;
+    margin-bottom: 10px;
+}
+.form-style-4 label > span{
+    display: inline-block;
+    float: left;
+    width: 150px;
+}
+.form-style-4 input[type=text],
+.form-style-4 input[type=email]
+{
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 275px;
+    outline: none;
+    padding: 0px 0px 0px 0px;
+    font-style: italic;
+}
+.form-style-4 textarea{
+    font-style: italic;
+    padding: 0px 0px 0px 0px;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 275px;
+    overflow: hidden;
+    resize:none;
+    height:20px;
+}
+
+.form-style-4 textarea:focus,
+.form-style-4 input[type=text]:focus,
+.form-style-4 input[type=email]:focus,
+.form-style-4 input[type=email] :focus
+{
+    border-bottom: 1px dashed #D9FFA9;
+}
+
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button]{
+    background: #576E86;
+    border: none;
+    padding: 8px 10px 8px 10px;
+    border-radius: 5px;
+    color: #A8BACE;
+}
+.form-style-4 input[type=submit]:hover,
+.form-style-4 input[type=button]:hover{
+background: #394D61;
+}
+</style>
+</head>
+<body>
+
+<form id="searchForm" class="form-style-4" action="http://localhost:8080/line-chart" method="POST">
+    <label for="graph-name">
+        <span>Graph Name</span><input type="text" name="graphName" required="true"/>
+    </label>
+    <label for="timestamp">
+        <span>Date</span><input type="text" id="datepicker" name="timestamp" required="true"/>
+    </label>
+    <label for="data-value">
+        <span>Value</span><input type="text" name="dataPoint" required="true"/>
+    </label>
+    <label>
+        <span>&nbsp;</span><input type="submit" value="Add"/>
+    </label>
+</form>
+<div id="content" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<script>
+$( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+
+$( "#searchForm" ).submit(function( event ) {
+  event.preventDefault();
+
+  var $form = $( this ),
+    term = $("#searchForm").serialize()
+    url = $form.attr( "action" );
+
+  // Send the data using post
+  var posting = $.post( url, { term } );
+
+  // Put the results in a div
+  posting.done(function( data ) {
+    var content = $( data ).find( "#content" );
+    $( "#result" ).empty().append( content );
+  });
+});
+</script>
+
+</body>
+</html>
