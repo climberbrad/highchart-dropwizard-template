@@ -10,3 +10,5 @@ target/
 
 #log4j
 logs/
+
+.DS_Store
