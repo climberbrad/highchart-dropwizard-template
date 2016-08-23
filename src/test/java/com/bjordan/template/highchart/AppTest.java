@@ -1,38 +1,21 @@
 package com.bjordan.template.highchart;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static com.bjordan.template.highchart.api.AppResource.DAY_MONTH_YEAR_FORMAT;
+
+import org.junit.Test;
+
+import java.text.ParseException;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+public class AppTest {
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+    @Test
+    public void parseDate() throws ParseException {
+        String dateString = "08/22/2016";
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+        long timestamp = DAY_MONTH_YEAR_FORMAT.parse(dateString).toInstant().getEpochSecond();
+        System.out.println("here");
     }
 }

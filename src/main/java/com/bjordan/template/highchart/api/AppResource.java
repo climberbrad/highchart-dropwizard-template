@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 
 import javax.ws.rs.GET;
@@ -26,7 +27,7 @@ import javax.ws.rs.core.Response;
 public class AppResource {
   private final String LINE_CHART_PATH= "line-chart";
   private final LineChartDao lineChartDao;
-  private static final SimpleDateFormat DAY_MONTH_YEAR_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+  public static final SimpleDateFormat DAY_MONTH_YEAR_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
   private static final SimpleDateFormat YEAR_MONTH_DAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   public AppResource(LineChartDao lineChartDao) {
@@ -63,7 +64,8 @@ public class AppResource {
 
 
     String graphName = keyMap.get("graphName");
-    long timestamp = parseDate(URLDecoder.decode(keyMap.get("timestamp")), DAY_MONTH_YEAR_FORMAT).getEpochSecond();
+    String dateString = URLDecoder.decode(keyMap.get("timestamp"));
+    long timestamp = parseDate(dateString, DAY_MONTH_YEAR_FORMAT).toEpochMilli()/1000;
     double dataPoint = Double.valueOf(keyMap.get("dataPoint"));
 
     lineChartDao.insertLineGraphDataPoint(graphName,timestamp, dataPoint);
@@ -74,7 +76,8 @@ public class AppResource {
 
   private Instant parseDate(String date, DateFormat format) {
     try {
-      return format.parse(date).toInstant();
+      Date d = format.parse(date);
+      return d.toInstant();
     } catch (ParseException e) {
       e.printStackTrace();
     }
