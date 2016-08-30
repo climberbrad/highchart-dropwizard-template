@@ -1,5 +1,3 @@
-var charName;
-
 $(document).ready(function() {
 $( function() {
     $( "#datepicker" ).datepicker();
@@ -15,34 +13,32 @@ $( function() {
       });
 
     $('#searchForm input').on('keyup blur', function () { // fires on every keyup & blur
-          if ($('#searchForm').valid()) {                   // checks form for validity
-              $('submit-button').prop('disabled', false);        // enables button
-          } else {
-              $('submit-button').prop('disabled', 'disabled');   // disables button
-          }
+        if ($('#searchForm').valid()) {                   // checks form for validity
+            $('submit-button').prop('disabled', false);        // enables button
+        } else {
+            $('submit-button').prop('disabled', 'disabled');   // disables button
+        }
+    });
+
+    $( "#searchForm" ).submit(function( event ) {
+      var $form = $( this ),
+        term = $("#searchForm").serialize()
+        url = $form.attr("action") + "/" + graphName;
+
+      if( $('#searchForm').valid() ) {
+        var posting = $.post( url, { term } );
+        event.preventDefault();
+        location.reload();
+      }
+      // Put the results in a div
+      posting.done(function( data ) {
+        var content = $( data ).find( "#content" );
+        $( "#result" ).empty().append( content );
       });
-
-
-$( "#searchForm" ).submit(function( event ) {
-  var $form = $( this ),
-    term = $("#searchForm").serialize()
-    url = $form.attr("action") + "/" + graphName;
-
-  if( $('#searchForm').valid() ) {
-    var posting = $.post( url, { term } );
-    event.preventDefault();
-    location.reload();
-  }
-  // Put the results in a div
-  posting.done(function( data ) {
-    var content = $( data ).find( "#content" );
-    $( "#result" ).empty().append( content );
-  });
-
-});
+    });
 
     $.ajax({
-        url: 'http://localhost:8080/line-chart?name=Sample%20Line%20Chart&after=2016-08-01&before=2016-08-31',
+        url: 'http://localhost:8080/line-chart?name=Sample%20Line%20Chart&after=' + minusMonth() + '&before=' + now(),
         success: function(response) {
             graphName=response.chartName;
             var graphPoints = [];
@@ -70,6 +66,30 @@ function formattedDate(date) {
   var day = date.getDate().toString();
   day = day.length > 1 ? day : '0' + day;
   return month + '/' + day + '/' + year;
+}
+
+function now() {
+  var d = new Date();
+  var month = d.getMonth()+1;
+  var day = d.getDate();
+
+  var output = d.getFullYear() + "-"
+              + (month<10 ? '0' : '') + month + '-'
+              + (day<10 ? '0' : '') + day;
+
+  return output;
+}
+
+function minusMonth() {
+  var d = new Date();
+  var month = d.getMonth();
+  var day = d.getDate();
+
+  var output = d.getFullYear() + "-"
+              + (month<10 ? '0' : '') + month + '-'
+              + (day<10 ? '0' : '') + day;
+
+  return output;
 }
 
 // render graph
