@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -57,13 +58,11 @@ public class AppResource {
   }
 
   @POST
-  @Path(LINE_CHART_PATH)
-  public Response postLineChart(String data) {
+  @Path(LINE_CHART_PATH + "/{graphName}")
+  public Response postLineChart(@PathParam("graphName") String graphName, String data) {
     String keyVals = URLDecoder.decode(data.replace("term=", ""));
     Map<String, String> keyMap = Splitter.on("&").withKeyValueSeparator("=").split(keyVals);
 
-
-    String graphName = keyMap.get("graphName");
     String dateString = URLDecoder.decode(keyMap.get("timestamp"));
     long timestamp = parseDate(dateString, DAY_MONTH_YEAR_FORMAT).toEpochMilli()/1000;
     double dataPoint = Double.valueOf(keyMap.get("dataPoint"));

@@ -1,5 +1,6 @@
-$(document).ready(function() {
+var charName;
 
+$(document).ready(function() {
 $( function() {
     $( "#datepicker" ).datepicker();
   } );
@@ -23,13 +24,11 @@ $( function() {
 
 
 $( "#searchForm" ).submit(function( event ) {
-
   var $form = $( this ),
     term = $("#searchForm").serialize()
-    url = $form.attr( "action" );
+    url = $form.attr("action") + "/" + graphName;
 
-  console.log("valid: " + $('#searchForm').valid());
-  if($('#searchForm').valid()) {
+  if( $('#searchForm').valid() ) {
     var posting = $.post( url, { term } );
     event.preventDefault();
     location.reload();
@@ -43,8 +42,9 @@ $( "#searchForm" ).submit(function( event ) {
 });
 
     $.ajax({
-        url: 'http://localhost:8080/line-chart?name=line-chart-1&after=2016-08-01&before=2016-08-31',
+        url: 'http://localhost:8080/line-chart?name=Sample%20Line%20Chart&after=2016-08-01&before=2016-08-31',
         success: function(response) {
+            graphName=response.chartName;
             var graphPoints = [];
             var timeStamps = [];
             for(var i in response.data) {
@@ -57,7 +57,7 @@ $( "#searchForm" ).submit(function( event ) {
               var dataPoint = parseFloat(JSON.stringify(parseFloat(response.data[i].dataPoint)));
               graphPoints.push(dataPoint);
             }
-            makeHighChart(timeStamps,graphPoints);
+            makeHighChart(graphName,timeStamps,graphPoints);
         },
         cache: false
     });
@@ -73,14 +73,13 @@ function formattedDate(date) {
 }
 
 // render graph
-function makeHighChart(timeStamps,dataPoints) {
-    console.log("data points: " + dataPoints);
+function makeHighChart(graphName,timeStamps,dataPoints) {
     $('#container').highcharts({
         chart: {
             type: 'line'
         },
         title: {
-            text: 'Monthly Average Temperature'
+            text: graphName
         },
         subtitle: {
             text: 'Source: WorldClimate.com'
