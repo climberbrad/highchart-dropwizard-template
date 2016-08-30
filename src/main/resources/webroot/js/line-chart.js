@@ -1,22 +1,23 @@
 $(document).ready(function() {
-$( function() {
+
+  $( function() {
     $( "#datepicker" ).datepicker();
   } );
 
-   $('#searchForm').validate({ // initialize the plugin
-          rules: {
-              dataPoint: {
-                  required: true,
-                  number: true
-              }
+  $('#searchForm').validate({ // initialize the plugin
+      rules: {
+          dataPoint: {
+              required: true,
+              number: true
           }
-      });
+      }
+  });
 
     $('#searchForm input').on('keyup blur', function () { // fires on every keyup & blur
         if ($('#searchForm').valid()) {                   // checks form for validity
-            $('submit-button').prop('disabled', false);        // enables button
+            $('#submit-button').prop('disabled', false);        // enables button
         } else {
-            $('submit-button').prop('disabled', 'disabled');   // disables button
+            $('#submit-button').prop('disabled', 'disabled');   // disables button
         }
     });
 
