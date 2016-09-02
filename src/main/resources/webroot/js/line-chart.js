@@ -1,3 +1,4 @@
+var graphName='Simple Line Chart'
 $(document).ready(function() {
 
   $( function() {
@@ -39,9 +40,8 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: 'http://localhost:8080/line-chart?name=Sample%20Line%20Chart&after=' + minusMonth() + '&before=' + now(),
+        url: 'http://localhost:8080/line-chart?name=' + graphName + '&after=' + minusMonth() + '&before=' + now(),
         success: function(response) {
-            graphName=response.chartName;
             var graphPoints = [];
             var timeStamps = [];
             for(var i in response.data) {
